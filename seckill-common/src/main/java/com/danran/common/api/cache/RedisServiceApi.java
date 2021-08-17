@@ -66,4 +66,8 @@ public interface RedisServiceApi {
      * @return
      */
     boolean delete(String prefix, String key);
+
+    Boolean lock(String key, String value, int exTime);
+
+    void unlock(String key, String value);
 }

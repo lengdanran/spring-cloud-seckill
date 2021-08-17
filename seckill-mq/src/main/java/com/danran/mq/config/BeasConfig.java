@@ -1,5 +1,6 @@
 package com.danran.mq.config;
 
+import com.danran.common.api.cache.DLockApi;
 import com.danran.common.service.URLService;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;

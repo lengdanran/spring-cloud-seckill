@@ -1,6 +1,7 @@
 package com.danran.cache.service;
 
 import com.alibaba.fastjson.JSON;
+import com.danran.common.api.cache.DLockApi;
 import com.danran.common.api.cache.RedisServiceApi;
 import com.danran.common.api.cache.vo.KeyPrefix;
 import org.slf4j.Logger;
@@ -23,6 +24,9 @@ public class RedisServiceImpl implements RedisServiceApi {
 
     @Autowired
     private JedisPool jedisPool;
+
+    @Autowired
+    private DLockApi redisLock;
 
     /**
      * redis 的get操作，通过key获取存储在redis中的对象
@@ -232,5 +236,12 @@ public class RedisServiceImpl implements RedisServiceApi {
         if (jedis != null) jedis.close();
     }
 
+    public Boolean lock(String key, String value, int time) {
+        return redisLock.lock(key, value, time);
+    }
+
+    public void unlock(String key, String value) {
+        redisLock.unlock(key, value);
+    }
 
 }

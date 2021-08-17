@@ -32,6 +32,35 @@ public class URLService {
     private LoadBalancerClient loadBalancerClient;
 
     /*************Redis缓存服务调用*****************/
+
+    public Boolean lock(String key, String value, int time) {
+        ServiceInstance serviceInstance = loadBalancerClient.choose("redis-service");
+        String url = "http://" + serviceInstance.getHost() + ":" + serviceInstance.getPort() + "/cache/lock";
+        logger.info("post : " + url);
+        Map<String, Object> params = new ConcurrentHashMap<>();
+        params.put("key", key);
+        params.put("value", value);
+        params.put("time", JSON.toJSONString(time));
+        String post = HttpUtil.post(url, params);
+        try {
+            return JSON.parseObject(post, Boolean.class);
+        } catch (Exception e) {
+            logger.info(e.toString());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void unlock(String key, String value) {
+        ServiceInstance serviceInstance = loadBalancerClient.choose("redis-service");
+        String url = "http://" + serviceInstance.getHost() + ":" + serviceInstance.getPort() + "/cache/unlock";
+        logger.info("post : " + url);
+        Map<String, Object> params = new ConcurrentHashMap<>();
+        params.put("key", key);
+        params.put("value", value);
+        HttpUtil.post(url, params);
+    }
+
     /***
      *
      * @param keyPrefix

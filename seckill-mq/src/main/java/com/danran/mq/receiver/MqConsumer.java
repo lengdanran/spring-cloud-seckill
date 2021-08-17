@@ -38,21 +38,25 @@ public class MqConsumer {
         // get the user and book information in the msg
         User user = msg.getUser();
         Book book = msg.getBook();
-
-        // get the stock of the book
-        int stock = urlService.getBookStockByBookId(book.getId());
-        if (stock <= 0) {
-            log.info("库存不足，扣减库存失败。");
-            return;
+        if (urlService.lock(book.getId(), book.getId(), 200000)) {
+            // get the stock of the book
+            log.info("Lock the book == " + book);
+            int stock = urlService.getBookStockByBookId(book.getId());
+            if (stock <= 0) {
+                log.info("库存不足，扣减库存失败。");
+                return;
+            }
+            // 判断是否已经秒杀到了（保证秒杀接口幂等性）
+            Order seckill_order = this.getSkOrderByUserIdAndGoodsId(user.getId(), book.getId());
+            if (seckill_order != null) {
+                log.info("该用户已经秒杀得到book" + book + "的订单");
+                return;
+            }
+            // 访问秒杀服务接口
+            urlService.seckill(user, book);
+            urlService.unlock(book.getId(), book.getId());
+            log.info("Unlock the book == " + book);
         }
-        // 判断是否已经秒杀到了（保证秒杀接口幂等性）
-        Order seckill_order = this.getSkOrderByUserIdAndGoodsId(user.getId(), book.getId());
-        if (seckill_order != null) {
-            log.info("该用户已经秒杀得到book" + book + "的订单");
-            return;
-        }
-        // 访问秒杀服务接口
-        urlService.seckill(user, book);
     }
 
     public static void main(String[] args) {

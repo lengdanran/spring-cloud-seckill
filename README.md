@@ -1,4 +1,39 @@
 # 工程简介
 
-# 延伸阅读
+基于SpringBoot、SpringCloud、Mybatis、Nacos、RabbitMQ、Redis的分布式秒杀系统。
 
+#  接口测试：
+
+## 测试1
+
+![image-20210816172444428](README.assets/image-20210816172444428.png)
+
+sldgjl
+
+![image-20210816172634631](README.assets/image-20210816172634631.png)
+
+![image-20210817111812014](README.assets/image-20210817111812014.png)
+
+## 测试2
+
+![image-20210817112238108](README.assets/image-20210817112238108.png)
+
+![image-20210817134902088](README.assets/image-20210817134902088.png)
+
+![image-20210817112332135](README.assets/image-20210817112332135.png)
+
+## 测试3
+
+![image-20210817165010079](README.assets/image-20210817165010079.png)
+
+![image-20210817164955715](README.assets/image-20210817164955715.png)
+
+![image-20210817165427443](README.assets/image-20210817165427443.png)
+
+## 测试4
+
+![image-20210817170439136](README.assets/image-20210817170439136.png)
+
+![image-20210817170423796](README.assets/image-20210817170423796.png)
+
+![image-20210817170508651](README.assets/image-20210817170508651.png)

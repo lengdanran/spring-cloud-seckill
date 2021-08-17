@@ -54,4 +54,19 @@ public class CacheController {
                              @RequestParam("book_id") String bookId) {
         return Math.toIntExact(redisService.decr(keyPrefix, bookId));
     }
+
+    @PostMapping("/lock")
+    public Boolean lock(@RequestParam("key") String key,
+                        @RequestParam("value") String value,
+                        @RequestParam("time") String time) {
+        int expireTime = Integer.parseInt(time);
+        return redisService.lock(key, value, expireTime);
+    }
+
+    @PostMapping("/unlock")
+    public void unlock(@RequestParam("key") String key,
+                       @RequestParam("value") String value) {
+        redisService.unlock(key, value);
+    }
+
 }
